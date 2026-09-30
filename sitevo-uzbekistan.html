@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sitevo Uzbekistan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070a12;
+    --bg-2:#0b0f1c;
+    --paper:#0f1626;
+    --line:rgba(120,220,210,0.14);
+    --text:#e7ecf5;
+    --muted:#7c8aa3;
+    --cyan:#2fe8cf;
+    --violet:#7c8cff;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ---------- ambient background: circuit grid ---------- */
+  .field{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:
+      radial-gradient(55% 45% at 50% -6%, rgba(47,232,207,0.13), transparent 60%),
+      radial-gradient(45% 35% at 90% 95%, rgba(124,140,255,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  }
+  .field::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(65% 55% at 50% 15%, black, transparent 75%);
+            mask-image:radial-gradient(65% 55% at 50% 15%, black, transparent 75%);
+    opacity:0.45;
+  }
+
+  .circuit-wrap{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:0;
+    width:100%;
+    height:44vh;
+    min-height:260px;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .circuit-wrap svg{width:100%;height:100%;display:block;}
+  .cline{
+    fill:none;
+    stroke:var(--cyan);
+    stroke-width:1.4;
+    opacity:0.55;
+    stroke-dasharray:6 5;
+    stroke-dashoffset:400;
+    animation:dashmove 1400ms ease-out forwards;
+  }
+  .cline.v{stroke:var(--violet);}
+  .cline:nth-of-type(1){animation-delay:200ms;}
+  .cline:nth-of-type(2){animation-delay:340ms;}
+  .cline:nth-of-type(3){animation-delay:480ms;}
+  .cline:nth-of-type(4){animation-delay:620ms;}
+  .cline:nth-of-type(5){animation-delay:760ms;}
+  @keyframes dashmove{ to{stroke-dashoffset:0;} }
+
+  .pulse{
+    fill:none;
+    stroke:#eafffb;
+    stroke-width:2.6;
+    stroke-linecap:round;
+    stroke-dasharray:14 900;
+    opacity:0;
+    animation:pulseRun 3400ms linear 1900ms infinite;
+  }
+  .pulse.v2{stroke:#c7ccff; animation-delay:2500ms; animation-duration:3900ms;}
+  @keyframes pulseRun{
+    0%{opacity:0; stroke-dashoffset:0;}
+    4%{opacity:0.9;}
+    92%{opacity:0.9;}
+    100%{opacity:0; stroke-dashoffset:-900;}
+  }
+
+  .node{
+    fill:var(--bg-2);
+    stroke:var(--cyan);
+    stroke-width:1.6;
+    opacity:0;
+    animation:nodeIn 500ms ease-out forwards;
+  }
+  .node.v{stroke:var(--violet);}
+  .node:nth-of-type(1){animation-delay:250ms;}
+  .node:nth-of-type(2){animation-delay:420ms;}
+  .node:nth-of-type(3){animation-delay:590ms;}
+  .node:nth-of-type(4){animation-delay:760ms;}
+  .node:nth-of-type(5){animation-delay:930ms;}
+  .node:nth-of-type(6){animation-delay:1100ms;}
+  @keyframes nodeIn{ from{opacity:0; r:0;} to{opacity:1;} }
+
+  @media (prefers-reduced-motion: reduce){
+    .cline,.pulse,.node{animation:none !important; opacity:0.55 !important; stroke-dashoffset:0 !important;}
+  }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:88px 20px 56px;
+    max-width:560px;
+    margin:0 auto;
+  }
+
+  .prompt{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--cyan);
+    letter-spacing:0.02em;
+    margin:0 0 14px;
+    opacity:0;
+    animation:riseIn 600ms ease-out 1200ms forwards;
+  }
+  .prompt::before{content:"$ "; color:var(--muted);}
+
+  h1{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:clamp(30px, 7.4vw, 42px);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    margin:0 0 16px;
+    text-align:center;
+    color:var(--text);
+    opacity:0;
+    animation:riseIn 700ms ease-out 1350ms forwards;
+  }
+  h1 .accent{color:var(--cyan);}
+  h1 .cursor{
+    display:inline-block;
+    width:3px;
+    margin-left:4px;
+    background:var(--cyan);
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{opacity:0;} }
+
+  p.tagline{
+    text-align:center;
+    color:var(--muted);
+    font-size:15.5px;
+    line-height:1.6;
+    max-width:38ch;
+    margin:0 0 42px;
+    opacity:0;
+    animation:riseIn 700ms ease-out 1550ms forwards;
+  }
+  p.tagline code{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--violet);
+    font-size:14px;
+  }
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- link buttons ---------- */
+  .links{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:13px;
+  }
+  .link{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    width:100%;
+    padding:17px 20px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--text);
+    text-decoration:none;
+    font-size:15.5px;
+    font-weight:500;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(10px);
+    animation:riseIn 600ms ease-out forwards;
+    transition:transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
+  }
+  .link:nth-of-type(1){animation-delay:1750ms;}
+  .link:nth-of-type(2){animation-delay:1830ms;}
+  .link:nth-of-type(3){animation-delay:1910ms;}
+  .link:nth-of-type(4){animation-delay:1990ms;}
+
+  .link:hover, .link:focus-visible{
+    transform:translateY(-2px);
+    border-color:var(--cyan);
+    background:#131c30;
+    box-shadow:0 0 0 1px rgba(47,232,207,0.15), 0 10px 26px rgba(0,0,0,0.35);
+  }
+  .link:focus-visible{outline:1.5px solid var(--cyan); outline-offset:2px;}
+
+  .link .tag{
+    flex:0 0 auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--cyan);
+  }
+  .link .ic{
+    flex:0 0 auto;
+    width:20px;height:20px;
+    color:var(--cyan);
+  }
+  .link .label{flex:1;}
+  .link .label small{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:400;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .link .go{
+    flex:0 0 auto;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:16px;
+    transition:transform 220ms ease;
+  }
+  .link:hover .go{transform:translateX(3px); color:var(--cyan);}
+
+  footer{
+    margin-top:48px;
+    text-align:center;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    opacity:0;
+    animation:riseIn 600ms ease-out 2150ms forwards;
+  }
+  footer span{color:var(--cyan);}
+</style>
+</head>
+<body>
+
+<div class="field" aria-hidden="true"></div>
+
+<div class="circuit-wrap" aria-hidden="true">
+  <svg viewBox="0 0 400 240" fill="none">
+    <path class="cline" d="M 20 40 H 140 L 170 70 H 260"/>
+    <path class="cline v" d="M 380 30 H 280 L 250 60 V 120"/>
+    <path class="cline" d="M 20 150 H 100 L 130 180 H 240 L 265 205"/>
+    <path class="cline v" d="M 380 190 H 300 L 275 160 H 200"/>
+    <path class="cline" d="M 250 60 V 120 H 200"/>
+
+    <path class="pulse" d="M 20 40 H 140 L 170 70 H 260"/>
+    <path class="pulse v2" d="M 20 150 H 100 L 130 180 H 240 L 265 205"/>
+
+    <circle class="node" cx="20" cy="40" r="4"/>
+    <circle class="node v" cx="380" cy="30" r="4"/>
+    <circle class="node" cx="170" cy="70" r="3.4"/>
+    <circle class="node v" cx="250" cy="120" r="3.4"/>
+    <circle class="node" cx="130" cy="180" r="3.4"/>
+    <circle class="node v" cx="265" cy="205" r="4"/>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <p class="prompt">sitevo --init</p>
+  <h1>Sitevo <span class="accent">Uzbekistan</span><span class="cursor">&nbsp;</span></h1>
+  <p class="tagline">IT sohasida ishlaydiganlar uchun makon — <code>g'oyangizni kodga</code>, kodni esa natijaga aylantiramiz.</p>
+
+  <div class="links">
+    <a class="link" href="https://t.me/sitevo_uzbekistan" target="_blank" rel="noopener">
+      <span class="tag">&gt;</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 4 3 11.2l6 2.2m12-9.4-3.6 16-8.4-6.4m12-9.6L9 15.4m0 0v5.4l3-3.4"/></svg>
+      <span class="label">Admin bilan bog'lanish<small>// buyurtma va hamkorlik</small></span>
+      <span class="go">→</span>
+    </a>
+
+    <a class="link" href="tel:+998970095020">
+      <span class="tag">&gt;</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.9c0-.6.4-1 1-1H7.1c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z"/></svg>
+      <span class="label">+998 97 009 50 20<small>// qo'ng'iroq qilish</small></span>
+      <span class="go">→</span>
+    </a>
+
+    <a class="link" href="https://www.instagram.com/sitevo.uz" target="_blank" rel="noopener">
+      <span class="tag">&gt;</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>
+      <span class="label">Instagram<small>@sitevo.uz</small></span>
+      <span class="go">→</span>
+    </a>
+
+    <a class="link" href="https://t.me/sitevo_uz" target="_blank" rel="noopener">
+      <span class="tag">&gt;</span>
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 4 3 11.2l6 2.2m12-9.4-3.6 16-8.4-6.4m12-9.6L9 15.4m0 0v5.4l3-3.4"/></svg>
+      <span class="label">Telegram kanal<small>@sitevo_uz — yangiliklar va loyihalar</small></span>
+      <span class="go">→</span>
+    </a>
+  </div>
+
+  <footer>&lt;/&gt; Sitevo <span>Uzbekistan</span></footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luxora Parfumes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14080b;
+  --bg2:#1d0b10;
+  --wine:#3a1420;
+  --gold:#d8b679;
+  --gold-hi:#f3dca4;
+  --gold-lo:#9c7638;
+  --ink:#f1e8da;
+  --muted:#a8988c;
+  --line:rgba(216,182,121,.22);
+  --serif:"Cormorant Garamond","Times New Roman",Georgia,serif;
+  --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+
+/* Header */
+header{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 5vw;background:linear-gradient(to bottom,rgba(20,8,11,.88),rgba(20,8,11,0));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.logo{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:.22em;color:var(--gold-hi);white-space:nowrap}
+.logo small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.5em;color:var(--muted);margin-top:-4px}
+nav{display:flex;gap:34px}
+nav a{font-size:14px;color:var(--muted);transition:color .25s}
+nav a:hover{color:var(--gold-hi)}
+.head-right{display:flex;align-items:center;gap:16px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{background:none;border:0;padding:6px 12px;border-radius:999px;font-size:12px;letter-spacing:.08em;color:var(--muted);transition:all .25s}
+.lang button[aria-pressed="true"]{background:linear-gradient(135deg,var(--gold-hi),var(--gold-lo));color:#1a0c0f}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:2px;font-size:14px;font-weight:500;letter-spacing:.04em;border:1px solid transparent;transition:transform .25s,box-shadow .25s,background .25s}
+.btn-gold{background:linear-gradient(135deg,var(--gold-hi),var(--gold) 45%,var(--gold-lo));color:#1a0c0f}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(216,182,121,.25)}
+.btn-ghost{border-color:var(--gold);color:var(--gold-hi);background:transparent}
+.btn-ghost:hover{background:rgba(216,182,121,.1)}
+.btn-sm{padding:10px 18px;font-size:13px}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:130px 5vw 70px;overflow:hidden;background:
+  radial-gradient(60% 70% at 74% 48%,rgba(120,36,56,.55),rgba(20,8,11,0) 70%),
+  radial-gradient(40% 50% at 12% 100%,rgba(216,182,121,.10),rgba(20,8,11,0) 70%),
+  var(--bg)}
+#stage{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero-fallback{position:absolute;right:12vw;top:50%;transform:translateY(-50%);width:min(30vw,300px);z-index:1}
+.hero-content{position:relative;z-index:2;max-width:590px}
+.hero-content>*{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero-content>*:nth-child(2){animation-delay:.12s}
+.hero-content>*:nth-child(3){animation-delay:.24s}
+.hero-content>*:nth-child(5){animation-delay:.36s}
+.hero-content>*:nth-child(6){animation-delay:.48s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(46px,7.2vw,98px);line-height:.98;letter-spacing:-.015em;margin:0 0 26px;color:var(--ink)}
+.hero p.sub{color:var(--muted);font-size:17px;max-width:44ch;margin:0 0 34px}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:40px}
+.m-spacer{display:none}
+.pick-label{font-size:13px;color:var(--muted);margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.chip{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.02);border:1px solid var(--line);padding:8px 15px;border-radius:999px;font-size:13px;color:var(--muted);transition:all .25s}
+.chip i{width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.chip:hover{color:var(--ink);border-color:var(--gold)}
+.chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-hi);background:rgba(216,182,121,.08)}
+.now{min-height:70px}
+.now b{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:32px;color:var(--gold-hi);line-height:1.15}
+.now span{color:var(--muted);font-size:14px}
+
+/* Sections */
+section{position:relative}
+.wrap{padding:130px 5vw}
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(38px,5vw,66px);line-height:1.05;margin:0 0 16px;letter-spacing:-.01em}
+.lead{color:var(--muted);max-width:52ch;margin:0}
+.collection{background:linear-gradient(to bottom,var(--bg),var(--bg2))}
+.col-grid{display:grid;grid-template-columns:5fr 7fr;gap:6vw;margin-top:64px;align-items:start}
+.preview{position:sticky;top:110px;height:min(72vh,620px);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(60% 55% at 50% 45%,var(--glow,rgba(120,36,56,.5)),rgba(20,8,11,0) 75%);transition:background .5s}
+.preview svg{width:56%;max-width:260px;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55));animation:bob 6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.preview b{margin-top:22px;font-family:var(--serif);font-style:italic;font-weight:400;font-size:30px;color:var(--gold-hi)}
+.rows{border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:56px 1fr auto;gap:22px;align-items:center;padding:26px 0;border-top:1px solid var(--line);cursor:pointer;transition:padding .35s,background .35s}
+.row:hover,.row.on{padding-left:14px;background:linear-gradient(90deg,rgba(216,182,121,.07),transparent)}
+.row .mini{width:44px}
+.row h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.2vw,40px);line-height:1.1;margin:0}
+.row p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.row em{font-style:normal;color:var(--gold);font-size:13px;margin-left:8px}
+
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:60px;border-top:1px solid var(--line)}
+.why-item{padding:38px 30px 10px 0;border-left:1px solid var(--line);padding-left:30px}
+.why-item:first-child{border-left:0;padding-left:0}
+.why-item svg{width:30px;height:30px;stroke:var(--gold);fill:none;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;margin-bottom:22px}
+.why-item h3{font-family:var(--serif);font-weight:500;font-size:27px;margin:0 0 8px}
+.why-item p{margin:0;color:var(--muted);font-size:15px}
+
+.contact{background:radial-gradient(70% 90% at 15% 100%,rgba(140,40,62,.55),rgba(20,8,11,0) 70%),var(--bg2);border-top:1px solid var(--line)}
+.contact h2{font-size:clamp(44px,7vw,104px);max-width:12ch;font-weight:300;line-height:.98}
+.contact .lead{margin:22px 0 38px;font-size:18px}
+.contact .actions{margin:0}
+footer{padding:34px 5vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:13px;background:var(--bg2)}
+footer a:hover{color:var(--gold-hi)}
+.tg{position:fixed;right:22px;bottom:22px;z-index:60;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold-hi),var(--gold-lo));display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 6px rgba(216,182,121,.14);transition:transform .25s}
+.tg:hover{transform:scale(1.08)}
+.tg svg{width:26px;height:26px;fill:#1a0c0f}
+
+@media (max-width:980px){nav{display:none}}
+@media (max-width:860px){
+  .hero{align-items:flex-start;padding-top:110px}
+  .m-spacer{display:block;height:44vh}
+  .hero-fallback{width:44vw;right:28vw;top:60%}
+  .col-grid{grid-template-columns:1fr;margin-top:40px}
+  .preview{display:none}
+  .row{grid-template-columns:44px 1fr;gap:16px}
+  .row .btn{grid-column:2;justify-self:start}
+  .why-item{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .why-item:first-child{border-top:0}
+  .head-right .btn{display:none}
+  .wrap{padding:90px 5vw}
+}
+@media (max-width:420px){.logo{font-size:21px}.lang button{padding:6px 9px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#top" aria-label="Luxora Parfumes">LUXORA<small>PARFUMES</small></a>
+  <nav>
+    <a href="#collection" data-i18n="nav_collection"></a>
+    <a href="#why" data-i18n="nav_why"></a>
+    <a href="#contact" data-i18n="nav_contact"></a>
+  </nav>
+  <div class="head-right">
+    <div class="lang" role="group" aria-label="Language">
+      <button data-lang="uz" aria-pressed="true">UZ</button>
+      <button data-lang="ru" aria-pressed="false">RU</button>
+      <button data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-gold btn-sm" href="https://t.me/luxora_admin" target="_blank" rel="noopener" data-i18n="cta_order"></a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" id="hero">
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="hero-content">
+    <h1 data-i18n="hero_title"></h1>
+    <p class="sub" data-i18n="hero_sub"></p>
+    <div class="m-spacer" aria-hidden="true"></div>
+    <div class="actions">
+      <a class="btn btn-gold" href="https://t.me/luxora_admin" target="_blank" rel="noopener" data-i18n="cta_order"></a>
+      <button class="btn btn-ghost" id="sprayBtn" type="button" data-i18n="hero_spray"></button>
+    </div>
+    <div class="pick-label" data-i18n="hero_pick"></div>
+    <div class="chips" id="chips"></div>
+    <div class="now" aria-live="polite"><b id="nowName"></b><span id="nowNotes"></span></div>
+  </div>
+</section>
+
+<section class="collection" id="collection">
+  <div class="wrap">
+    <h2 data-i18n="col_title"></h2>
+    <p class="lead" data-i18n="col_sub"></p>
+    <div class="col-grid">
+      <div class="preview" id="preview" aria-hidden="true"></div>
+      <div class="rows" id="rows"></div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <h2 data-i18n="why_title"></h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l3 18M15 3l-3 18"/></svg>
+        <h3 data-i18n="why1_t"></h3><p data-i18n="why1_d"></p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>
+        <h3 data-i18n="why2_t"></h3><p data-i18n="why2_d"></p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="4"/><path d="M5 13h14v8H5zM12 9v12"/><path d="M12 9c-3 0-4-4-1.5-4S12 9 12 9zM12 9c3 0 4-4 1.5-4S12 9 12 9z"/></svg>
+        <h3 data-i18n="why3_t"></h3><p data-i18n="why3_d"></p>
+      </div>
+      <div class="why-item">
+        <svg viewBox="0 0 24 24"><path d="M2 6h11v10H2zM13 9h5l3 3v4h-8z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg>
+        <h3 data-i18n="why4_t"></h3><p data-i18n="why4_d"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2 data-i18n="contact_title"></h2>
+    <p class="lead" data-i18n="contact_sub"></p>
+    <div class="actions">
+      <a class="btn btn-gold" href="https://t.me/luxora_admin" target="_blank" rel="noopener" data-i18n="contact_admin"></a>
+      <a class="btn btn-ghost" href="https://t.me/LuxoraParfumes" target="_blank" rel="noopener" data-i18n="contact_channel"></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>Luxora Parfumes</span>
+  <span><a href="https://t.me/LuxoraParfumes" target="_blank" rel="noopener">t.me/LuxoraParfumes</a> &nbsp;/&nbsp; <a href="https://t.me/luxora_admin" target="_blank" rel="noopener">t.me/luxora_admin</a></span>
+  <span data-i18n="foot"></span>
+</footer>
+
+<a class="tg" href="https://t.me/luxora_admin" target="_blank" rel="noopener" aria-label="Telegram">
+  <svg viewBox="0 0 24 24"><path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.7-7.9c.4-.3-.1-.5-.6-.2L6.6 13.4 2 12c-1-.3-1-1 .2-1.5L20.1 3.6c.8-.3 1.6.2 1.8.7z"/></svg>
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- Content ---------- */
+var SCENTS = [
+  {id:'noir',   name:'Noir Oud',       color:'#6b1e2e', tag:'tag_unisex', notes:'n_noir'},
+  {id:'rose',   name:'Velvet Rose',    color:'#c2476a', tag:'tag_women',  notes:'n_rose'},
+  {id:'saffron',name:'Golden Saffron', color:'#e0a02a', tag:'tag_unisex', notes:'n_saffron'},
+  {id:'musk',   name:'Blanc Musk',     color:'#e6d9bd', tag:'tag_unisex', notes:'n_musk'},
+  {id:'iris',   name:'Midnight Iris',  color:'#3b3f8f', tag:'tag_men',    notes:'n_iris'},
+  {id:'amber',  name:'Amber Royale',   color:'#c4661f', tag:'tag_men',    notes:'n_amber'}
+];
+
+var I18N = {
+  uz:{
+    nav_collection:"Kolleksiya", nav_why:"Nega Luxora", nav_contact:"Aloqa", cta_order:"Buyurtma berish",
+    hero_title:"Hid — sizning imzoingiz",
+    hero_sub:"Luxora Parfumes: tanlab olingan hidlar, sovg'a qadoqlash va sizga mos atirni topishda shaxsiy maslahat.",
+    hero_spray:"Purkash", hero_pick:"Hidni tanlang",
+    col_title:"Kolleksiya", col_sub:"Bu namuna ro'yxat. Narx va mavjudligini adminimizdan so'rang.", ask:"Narxini so'rash",
+    tag_men:"Erkaklar uchun", tag_women:"Ayollar uchun", tag_unisex:"Uniseks",
+    n_noir:"Oud, amber, vanil", n_rose:"Atirgul, pion, oq mushk", n_saffron:"Za'faron, sandal, teri",
+    n_musk:"Oq mushk, yasmin, sidr", n_iris:"Iris, bergamot, paçuli", n_amber:"Amber, mandarin, tonka",
+    why_title:"Har bir buyurtmaga e'tibor",
+    why1_t:"Tanlab olingan kolleksiya", why1_d:"Hidlar katalogga sinchiklab tanlab kiritiladi.",
+    why2_t:"Shaxsiy maslahat", why2_d:"Didingiz, fasl va vaziyatga mos hidni birga tanlaymiz.",
+    why3_t:"Sovg'a qadoqlash", why3_d:"Buyurtmangiz sovg'a sifatida tayyor holda beriladi.",
+    why4_t:"Tez yetkazib berish", why4_d:"Buyurtma tafsilotlarini Telegramda kelishamiz.",
+    contact_title:"Hidingizni birga topamiz",
+    contact_sub:"Adminga yozing: savollaringizga javob beramiz va buyurtmani rasmiylashtiramiz.",
+    contact_admin:"Adminga yozish", contact_channel:"Telegram kanal", foot:"Barcha huquqlar himoyalangan."
+  },
+  ru:{
+    nav_collection:"Коллекция", nav_why:"Почему Luxora", nav_contact:"Контакты", cta_order:"Заказать",
+    hero_title:"Аромат — ваша подпись",
+    hero_sub:"Luxora Parfumes: тщательно отобранные ароматы, подарочная упаковка и личная консультация по выбору.",
+    hero_spray:"Распылить", hero_pick:"Выберите аромат",
+    col_title:"Коллекция", col_sub:"Это примерный список. Цену и наличие уточняйте у администратора.", ask:"Узнать цену",
+    tag_men:"Мужской", tag_women:"Женский", tag_unisex:"Унисекс",
+    n_noir:"Уд, амбра, ваниль", n_rose:"Роза, пион, белый мускус", n_saffron:"Шафран, сандал, кожа",
+    n_musk:"Белый мускус, жасмин, кедр", n_iris:"Ирис, бергамот, пачули", n_amber:"Амбра, мандарин, тонка",
+    why_title:"Внимание к каждому заказу",
+    why1_t:"Отобранная коллекция", why1_d:"Ароматы попадают в каталог только после тщательного отбора.",
+    why2_t:"Личная консультация", why2_d:"Подберём аромат под ваш вкус, сезон и повод.",
+    why3_t:"Подарочная упаковка", why3_d:"Заказ приходит уже готовым к подарку.",
+    why4_t:"Быстрая доставка", why4_d:"Детали заказа согласуем в Telegram.",
+    contact_title:"Найдём ваш аромат вместе",
+    contact_sub:"Напишите администратору: ответим на вопросы и оформим заказ.",
+    contact_admin:"Написать администратору", contact_channel:"Telegram-канал", foot:"Все права защищены."
+  },
+  en:{
+    nav_collection:"Collection", nav_why:"Why Luxora", nav_contact:"Contact", cta_order:"Order now",
+    hero_title:"Scent is your signature",
+    hero_sub:"Luxora Parfumes: carefully selected fragrances, gift wrapping and a personal consultation to find the one that is yours.",
+    hero_spray:"Spray", hero_pick:"Choose a scent",
+    col_title:"The collection", col_sub:"A sample lineup. Ask our admin for prices and availability.", ask:"Ask the price",
+    tag_men:"For men", tag_women:"For women", tag_unisex:"Unisex",
+    n_noir:"Oud, amber, vanilla", n_rose:"Rose, peony, white musk", n_saffron:"Saffron, sandalwood, leather",
+    n_musk:"White musk, jasmine, cedar", n_iris:"Iris, bergamot, patchouli", n_amber:"Amber, mandarin, tonka bean",
+    why_title:"Care in every order",
+    why1_t:"A curated selection", why1_d:"Every fragrance is chosen with care before it joins the catalog.",
+    why2_t:"Personal advice", why2_d:"We match a scent to your taste, the season and the occasion.",
+    why3_t:"Gift wrapping", why3_d:"Your order arrives ready to be given.",
+    why4_t:"Fast delivery", why4_d:"We arrange the order details with you in Telegram.",
+    contact_title:"Let's find your scent",
+    contact_sub:"Message our admin: we'll answer your questions and place the order.",
+    contact_admin:"Message the admin", contact_channel:"Telegram channel", foot:"All rights reserved."
+  }
+};
+
+var lang = 'uz', current = 0;
+try{
+  var saved = localStorage.getItem('luxora_lang');
+  if(saved && I18N[saved]) lang = saved;
+  else { var nl=(navigator.language||'').slice(0,2); if(nl==='ru'||nl==='en') lang=nl; }
+}catch(e){}
+
+function t(k){ return (I18N[lang]&&I18N[lang][k]) || I18N.en[k] || k; }
+
+/* ---------- Bottle SVG (cards / fallback) ---------- */
+function bottleSVG(col,id){
+  return '<svg viewBox="0 0 120 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+
+  '<defs><linearGradient id="l'+id+'" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".95"/><stop offset="1" stop-color="'+col+'" stop-opacity=".55"/></linearGradient>'+
+  '<linearGradient id="g'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#f3dca4"/><stop offset=".5" stop-color="#c39a55"/><stop offset="1" stop-color="#8a6a33"/></linearGradient></defs>'+
+  '<rect x="49" y="18" width="22" height="26" rx="3" fill="url(#g'+id+')"/>'+
+  '<rect x="43" y="42" width="34" height="12" rx="2" fill="url(#g'+id+')"/>'+
+  '<rect x="18" y="52" width="84" height="108" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(243,220,164,.55)" stroke-width="1.2"/>'+
+  '<rect x="24" y="80" width="72" height="74" rx="9" fill="url(#l'+id+')"/>'+
+  '<rect x="38" y="100" width="44" height="30" fill="none" stroke="rgba(243,220,164,.8)" stroke-width=".8"/>'+
+  '<text x="60" y="119" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="9" fill="#f3dca4" letter-spacing="1.5">LUXORA</text>'+
+  '<path d="M27 62v84" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-linecap="round"/></svg>';
+}
+function hexToRGBA(h,a){var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+
+/* ---------- Render collection ---------- */
+var rowsEl=document.getElementById('rows'), previewEl=document.getElementById('preview');
+SCENTS.forEach(function(s,i){
+  var r=document.createElement('div');
+  r.className='row'; r.tabIndex=0; r.dataset.i=i;
+  r.innerHTML='<div class="mini">'+bottleSVG(s.color,'r'+i)+'</div>'+
+    '<div><h3>'+s.name+'<em data-i18n="'+s.tag+'"></em></h3><p data-i18n="'+s.notes+'"></p></div>'+
+    '<a class="btn btn-ghost btn-sm" href="https://t.me/luxora_admin" target="_blank" rel="noopener" data-i18n="ask"></a>';
+  r.addEventListener('mouseenter',function(){setPreview(i)});
+  r.addEventListener('focus',function(){setPreview(i)});
+  rowsEl.appendChild(r);
+});
+function setPreview(i){
+  var s=SCENTS[i];
+  previewEl.style.setProperty('--glow',hexToRGBA(s.color,.5));
+  previewEl.innerHTML=bottleSVG(s.color,'pv')+'<b>'+s.name+'</b>';
+  Array.prototype.forEach.call(rowsEl.children,function(el,k){el.classList.toggle('on',k===i)});
+}
+setPreview(0);
+
+/* ---------- Chips + hero scent ---------- */
+var chipsEl=document.getElementById('chips');
+SCENTS.forEach(function(s,i){
+  var b=document.createElement('button');
+  b.className='chip'; b.type='button'; b.setAttribute('aria-pressed',i===0);
+  b.innerHTML='<i style="background:'+s.color+'"></i>'+s.name;
+  b.addEventListener('click',function(){ chooseScent(i,true); });
+  chipsEl.appendChild(b);
+});
+function renderNow(){
+  document.getElementById('nowName').textContent=SCENTS[current].name;
+  document.getElementById('nowNotes').textContent=t(SCENTS[current].notes);
+  Array.prototype.forEach.call(chipsEl.children,function(el,k){el.setAttribute('aria-pressed',k===current)});
+}
+
+/* ---------- Language ---------- */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(function(el){ el.textContent=t(el.getAttribute('data-i18n')); });
+  document.querySelectorAll('[data-lang]').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.lang===lang); });
+  renderNow();
+}
+document.querySelectorAll('[data-lang]').forEach(function(b){
+  b.addEventListener('click',function(){
+    lang=b.dataset.lang;
+    try{localStorage.setItem('luxora_lang',lang);}catch(e){}
+    applyLang();
+  });
+});
+applyLang();
+
+/* ---------- 3D scene ---------- */
+var api = { spray:function(){}, setColor:function(){} };
+function chooseScent(i,doSpray){
+  current=i; renderNow(); api.setColor(SCENTS[i].color); setPreview(i);
+  if(doSpray) api.spray();
+}
+document.getElementById('sprayBtn').addEventListener('click',function(){ api.spray(); });
+
+(function initThree(){
+  var hero=document.getElementById('hero');
+  var canvas=document.getElementById('stage');
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fallback(){
+    var d=document.createElement('div'); d.className='hero-fallback'; d.innerHTML=bottleSVG(SCENTS[0].color,'fb');
+    hero.appendChild(d);
+  }
+  if(!window.THREE){ fallback(); return; }
+  var renderer;
+  try{
+    renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
+  }catch(e){ fallback(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.1;
+  renderer.setClearColor(0x000000,0);
+
+  function C(hex){ return new THREE.Color(hex).convertSRGBToLinear(); }
+
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(32,1,0.1,100);
+
+  /* Studio environment for reflections */
+  var envScene=new THREE.Scene();
+  envScene.background=C('#0c0507');
+  function strip(w,h,x,y,z,intensity,hex){
+    var m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:C(hex).multiplyScalar(intensity),side:THREE.DoubleSide}));
+    m.position.set(x,y,z); m.lookAt(0,0,0); envScene.add(m);
+  }
+  strip(12,2.5,0,7,4,9,'#fff2dc');
+  strip(2,12,-7,0,3,6,'#fff2dc');
+  strip(2.5,10,7,1,2,5,'#d8b679');
+  strip(14,7,0,0,-9,3,'#8a2a44');
+  strip(10,2,0,-6,5,2,'#d8b679');
+  var pmrem=new THREE.PMREMGenerator(renderer);
+  scene.environment=pmrem.fromScene(envScene,0.03).texture;
+
+  /* Lights */
+  scene.add(new THREE.AmbientLight(0xffffff,0.25));
+  var key=new THREE.DirectionalLight(0xffe6bd,1.4); key.position.set(3,4,6); scene.add(key);
+  var rim=new THREE.PointLight(C('#d8b679'),1.6,20); rim.position.set(-4,2,-3); scene.add(rim);
+  var flashLight=new THREE.PointLight(0xffffff,0,8); flashLight.position.set(0,1.6,2); scene.add(flashLight);
+
+  var stageG=new THREE.Group(); scene.add(stageG);
+  var bottle=new THREE.Group(); stageG.add(bottle);
+
+  function rr(w,h,r){
+    var s=new THREE.Shape(),x=-w/2,y=-h/2;
+    s.moveTo(x+r,y); s.lineTo(x+w-r,y); s.quadraticCurveTo(x+w,y,x+w,y+r);
+    s.lineTo(x+w,y+h-r); s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    s.lineTo(x+r,y+h); s.quadraticCurveTo(x,y+h,x,y+h-r);
+    s.lineTo(x,y+r); s.quadraticCurveTo(x,y,x+r,y); return s;
+  }
+  var glassGeo=new THREE.ExtrudeGeometry(rr(1.5,2,0.2),{depth:0.9,bevelEnabled:true,bevelThickness:0.1,bevelSize:0.1,bevelSegments:8,curveSegments:16});
+  glassGeo.center();
+  var glass=new THREE.Mesh(glassGeo,new THREE.MeshPhysicalMaterial({
+    color:0xffffff,roughness:0.03,metalness:0,clearcoat:1,clearcoatRoughness:0.03,
+    transparent:true,opacity:0.32,envMapIntensity:2.4,side:THREE.DoubleSide,depthWrite:false}));
+  glass.renderOrder=2; bottle.add(glass);
+
+  var liqGeo=new THREE.ExtrudeGeometry(rr(1.3,1.55,0.15),{depth:0.5,bevelEnabled:true,bevelThickness:0.05,bevelSize:0.05,bevelSegments:5,curveSegments:12});
+  liqGeo.center();
+  var liqMat=new THREE.MeshPhysicalMaterial({color:C(SCENTS[0].color),roughness:0.12,metalness:0.05,clearcoat:1,clearcoatRoughness:0.1,transparent:true,opacity:0.94,emissive:C(SCENTS[0].color),emissiveIntensity:0.18,envMapIntensity:1.2});
+  var liquid=new THREE.Mesh(liqGeo,liqMat); liquid.position.y=-0.15; liquid.renderOrder=1; bottle.add(liquid);
+
+  var goldMat=new THREE.MeshStandardMaterial({color:C('#d8b679'),metalness:1,roughness:0.22,envMapIntensity:1.6});
+  var collar=new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.38,0.24,48),goldMat); collar.position.y=1.22; bottle.add(collar);
+  var neck=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.16,32),goldMat); neck.position.y=1.42; bottle.add(neck);
+  var actuator=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.17,0.3,32),goldMat); var actBase=1.6; actuator.position.y=actBase; bottle.add(actuator);
+  var nozzle=new THREE.Object3D(); nozzle.position.set(0,actBase+0.05,0.2); bottle.add(nozzle);
+  var nozzleMesh=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.16,16),new THREE.MeshStandardMaterial({color:C('#f3dca4'),metalness:1,roughness:0.2}));
+  nozzleMesh.rotation.x=Math.PI/2; nozzleMesh.position.set(0,actBase+0.05,0.16); bottle.add(nozzleMesh);
+
+  /* Label */
+  var lc=document.createElement('canvas'); lc.width=512; lc.height=360;
+  var lctx=lc.getContext('2d');
+  var labelTex=new THREE.CanvasTexture(lc); labelTex.encoding=THREE.sRGBEncoding; labelTex.anisotropy=8;
+  function drawLabel(){
+    lctx.clearRect(0,0,512,360);
+    lctx.strokeStyle='rgba(243,220,164,.95)'; lctx.lineWidth=3; lctx.strokeRect(14,14,484,332);
+    lctx.lineWidth=1; lctx.strokeRect(26,26,460,308);
+    lctx.fillStyle='#f3dca4'; lctx.textAlign='center';
+    if('letterSpacing' in lctx) lctx.letterSpacing='10px';
+    lctx.font='600 84px "Cormorant Garamond", Georgia, serif';
+    lctx.fillText('LUXORA',256+5,196);
+    lctx.font='400 26px Jost, Arial, sans-serif';
+    if('letterSpacing' in lctx) lctx.letterSpacing='12px';
+    lctx.fillText('PARFUMES',256+6,250);
+    lctx.fillRect(196,112,120,2);
+    labelTex.needsUpdate=true;
+  }
+  drawLabel();
+  if(document.fonts && document.fonts.load){
+    Promise.all([document.fonts.load('600 84px "Cormorant Garamond"'),document.fonts.load('400 26px Jost')]).then(drawLabel).catch(function(){});
+  }
+  var label=new THREE.Mesh(new THREE.PlaneGeometry(1.05,0.74),new THREE.MeshBasicMaterial({map:labelTex,transparent:true,depthWrite:false,toneMapped:false}));
+  label.position.set(0,-0.15,0.56); label.renderOrder=3; bottle.add(label);
+
+  /* Pedestal */
+  var ped=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.72,0.2,72),new THREE.MeshStandardMaterial({color:C('#1a0a0f'),metalness:0.9,roughness:0.28,envMapIntensity:1.4}));
+  ped.position.y=-1.2; stageG.add(ped);
+  var ring=new THREE.Mesh(new THREE.TorusGeometry(1.5,0.018,16,120),new THREE.MeshBasicMaterial({color:C('#f3dca4'),toneMapped:false}));
+  ring.rotation.x=Math.PI/2; ring.position.y=-1.1; stageG.add(ring);
+
+  /* Soft texture */
+  function softTexture(){
+    var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d');
+    var g=x.createRadialGradient(32,32,0,32,32,32);
+    g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.35,'rgba(255,255,255,.45)'); g.addColorStop(1,'rgba(255,255,255,0)');
+    x.fillStyle=g; x.fillRect(0,0,64,64); return new THREE.CanvasTexture(c);
+  }
+  var soft=softTexture();
+
+  /* Glow behind bottle */
+  var glow=new THREE.Sprite(new THREE.SpriteMaterial({map:soft,color:C('#c2476a'),transparent:true,opacity:0.32,blending:THREE.AdditiveBlending,depthWrite:false}));
+  glow.scale.set(7,7,1); glow.position.set(0,0.2,-1.5); stageG.add(glow);
+
+  /* Gold dust */
+  var dustN=reduce?60:190, dustPos=new Float32Array(dustN*3);
+  for(var i=0;i<dustN;i++){ dustPos[i*3]=(Math.random()-.5)*11; dustPos[i*3+1]=(Math.random()-.5)*7; dustPos[i*3+2]=(Math.random()-.5)*5-0.5; }
+  var dustGeo=new THREE.BufferGeometry(); dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));
+  var dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({map:soft,size:0.11,color:C('#d8b679'),transparent:true,opacity:0.85,blending:THREE.AdditiveBlending,depthWrite:false}));
+  dust.frustumCulled=false; scene.add(dust);
+
+  /* Mist particles */
+  var N=420;
+  var mPos=new Float32Array(N*3), mSize=new Float32Array(N), mAlpha=new Float32Array(N);
+  var mVel=new Float32Array(N*3), mLife=new Float32Array(N), mMax=new Float32Array(N), mBase=new Float32Array(N);
+  for(var k=0;k<N;k++){ mLife[k]=1; mMax[k]=1; }
+  var mGeo=new THREE.BufferGeometry();
+  mGeo.setAttribute('position',new THREE.BufferAttribute(mPos,3));
+  mGeo.setAttribute('aSize',new THREE.BufferAttribute(mSize,1));
+  mGeo.setAttribute('aAlpha',new THREE.BufferAttribute(mAlpha,1));
+  var mMat=new THREE.ShaderMaterial({
+    uniforms:{uMap:{value:soft},uColor:{value:new THREE.Color(1,1,1)},uScale:{value:window.innerHeight}},
+    vertexShader:'attribute float aSize;attribute float aAlpha;varying float vA;uniform float uScale;void main(){vA=aAlpha;vec4 mv=modelViewMatrix*vec4(position,1.0);gl_PointSize=aSize*uScale/(-mv.z);gl_Position=projectionMatrix*mv;}',
+    fragmentShader:'uniform sampler2D uMap;uniform vec3 uColor;varying float vA;void main(){vec4 t=texture2D(uMap,gl_PointCoord);gl_FragColor=vec4(uColor,t.a*vA);}',
+    transparent:true,depthWrite:false,blending:THREE.AdditiveBlending
+  });
+  var mist=new THREE.Points(mGeo,mMat); mist.frustumCulled=false; scene.add(mist);
+  var mCursor=0;
+
+  var targetCol=C(SCENTS[0].color), sprayT=0, press=0, flash=0, emitAcc=0;
+  function mistColor(){
+    var c=liqMat.color.clone(); c.lerp(new THREE.Color(1,1,1),0.55); mMat.uniforms.uColor.value.copy(c);
+  }
+  var tmpV=new THREE.Vector3(), tmpQ=new THREE.Quaternion(), dirV=new THREE.Vector3();
+  function emit(){
+    var i=mCursor; mCursor=(mCursor+1)%N;
+    nozzle.getWorldPosition(tmpV); bottle.getWorldQuaternion(tmpQ);
+    dirV.set((Math.random()-.5)*.55+0.05,(Math.random()-.5)*.45+0.22,1).normalize().applyQuaternion(tmpQ);
+    var sp=2.2+Math.random()*2.4;
+    mPos[i*3]=tmpV.x; mPos[i*3+1]=tmpV.y; mPos[i*3+2]=tmpV.z;
+    mVel[i*3]=dirV.x*sp; mVel[i*3+1]=dirV.y*sp; mVel[i*3+2]=dirV.z*sp;
+    mLife[i]=0; mMax[i]=1.1+Math.random()*1.3; mBase[i]=0.12+Math.random()*0.16;
+  }
+
+  api.spray=function(){ sprayT=0.6; press=1; flash=1; };
+  api.setColor=function(hex){ targetCol=C(hex); };
+
+  /* Layout */
+  var vw=1,vh=1;
+  function resize(){
+    var W=hero.clientWidth, H=hero.clientHeight;
+    renderer.setSize(W,H,false);
+    var aspect=W/H; camera.aspect=aspect;
+    camera.position.set(0,0.4,8.8); camera.lookAt(0,0.1,0);
+    camera.updateProjectionMatrix();
+    vh=2*Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.position.z; vw=vh*aspect;
+    if(aspect>1.15){ stageG.position.set(vw*0.24,-0.2,0); stageG.scale.setScalar(1.05); }
+    else { var sc=Math.max(0.42,Math.min(0.9,vw/4.3)); stageG.position.set(0,-vh*0.05+0.15,0); stageG.scale.setScalar(sc); }
+    mMat.uniforms.uScale.value=H*renderer.getPixelRatio()*0.5/Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*0.5;
+  }
+  window.addEventListener('resize',resize);
+  if(window.ResizeObserver) new ResizeObserver(resize).observe(hero);
+  resize();
+
+  var mx=0,my=0;
+  window.addEventListener('pointermove',function(e){ mx=(e.clientX/window.innerWidth-.5)*2; my=(e.clientY/window.innerHeight-.5)*2; },{passive:true});
+
+  /* Loop */
+  var clock=new THREE.Clock(), time=0, running=false, raf=0, rotY=0, rotX=0, visible=true, autoT=2.2;
+  function tick(){
+    raf=requestAnimationFrame(tick);
+    var dt=Math.min(clock.getDelta(),0.05); time+=dt;
+
+    var sy=Math.min(window.scrollY,900);
+    var ty=mx*0.45+Math.sin(time*0.6)*0.28+sy*0.004;
+    var tx=my*0.12;
+    rotY+=(ty-rotY)*0.05; rotX+=(tx-rotX)*0.05;
+    bottle.rotation.y=rotY; bottle.rotation.x=rotX;
+    bottle.position.y=Math.sin(time*1.1)*0.05;
+
+    liqMat.color.lerp(targetCol,0.06); liqMat.emissive.copy(liqMat.color);
+    glow.material.color.copy(liqMat.color);
+    mistColor();
+
+    press*=Math.exp(-7*dt); actuator.position.y=actBase-0.09*press;
+    flash*=Math.exp(-5*dt); flashLight.intensity=flash*3;
+
+    if(sprayT>0){ sprayT-=dt; emitAcc+=dt*650; while(emitAcc>=1){ emit(); emitAcc-=1; } }
+
+    for(var i=0;i<N;i++){
+      if(mLife[i]>=mMax[i]){ mAlpha[i]=0; mSize[i]=0; continue; }
+      mLife[i]+=dt; var p=mLife[i]/mMax[i];
+      var drag=Math.exp(-2.3*dt);
+      mVel[i*3]*=drag; mVel[i*3+1]=mVel[i*3+1]*drag+0.22*dt; mVel[i*3+2]*=drag;
+      mPos[i*3]+=mVel[i*3]*dt; mPos[i*3+1]+=mVel[i*3+1]*dt; mPos[i*3+2]+=mVel[i*3+2]*dt;
+      mSize[i]=mBase[i]*(1+p*3.4);
+      mAlpha[i]=(p<0.08?p/0.08:1)*Math.pow(1-p,1.6)*0.42;
+    }
+    mGeo.attributes.position.needsUpdate=true; mGeo.attributes.aSize.needsUpdate=true; mGeo.attributes.aAlpha.needsUpdate=true;
+
+    dust.rotation.y=time*0.03; dust.position.y=Math.sin(time*0.4)*0.15;
+
+    if(!reduce && visible){ autoT-=dt; if(autoT<=0){ api.spray(); autoT=9; } }
+    renderer.render(scene,camera);
+  }
+  function start(){ if(!running){ running=true; clock.getDelta(); tick(); } }
+  function stop(){ running=false; cancelAnimationFrame(raf); }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){ visible=en[0].isIntersecting; if(visible&&!document.hidden) start(); else stop(); },{threshold:0.02}).observe(hero);
+  } else start();
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) stop(); else if(visible) start(); });
+  start();
+})();
+</script>
+</body>
+</html>
